@@ -22,6 +22,13 @@ spec:
         image: dsurov/h1nginx:v0.4
         ports:
         - containerPort: 8000
+        readinessProbe:
+         exec:
+          command:
+          - cat
+          - /homework/index.html
+         initialDelaySeconds: 5
+         periodSeconds: 10
         volumeMounts:
         - name: mydir
           mountPath: /homework
