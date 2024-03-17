@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kuber-nginx-ingress
+  namespace: homework
+spec:
+  rules:
+  - host: homework.otus
+    http:
+      paths:
+      - pathType: ImplementationSpecific
+        path: /
+        backend:
+          service:
+            name: kuber-nginx-service
+            port:
+              number: 80
