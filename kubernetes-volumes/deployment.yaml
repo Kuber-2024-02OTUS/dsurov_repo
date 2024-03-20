@@ -31,6 +31,8 @@ spec:
         volumeMounts:
         - name: mydir
           mountPath: /homework
+        - name: configmap-volume
+          mountPath: /homework/conf
         lifecycle:
           preStop:
             exec:
@@ -48,7 +50,11 @@ spec:
           mountPath: /init
       volumes:
       - name: mydir
-        emptyDir: {}
+        persistentVolumeClaim:
+          claimName: kuber-pvc
+      - name: configmap-volume
+        configMap:
+         name: kuber-configmap
   strategy:
     type: RollingUpdate
     rollingUpdate:
