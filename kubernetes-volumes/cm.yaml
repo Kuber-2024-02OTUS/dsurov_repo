@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kuber-configmap
+  namespace: homework
+data:
+  email: denisurov@gmail.com
+  name: Denis
+  surname: Surov

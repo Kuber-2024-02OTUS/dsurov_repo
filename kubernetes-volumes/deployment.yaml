@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  namespace: homework
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      nodeSelector:
+        homework: "true"
+      containers:
+      - name: nginx-web
+        image: dsurov/h1nginx:v0.4
+        ports:
+        - containerPort: 8000
+        readinessProbe:
+         httpGet:
+          path: /index.html
+          port: 8000
+         initialDelaySeconds: 5
+         periodSeconds: 10
+        volumeMounts:
+        - name: mydir
+          mountPath: /homework
+        - name: configmap-volume
+          mountPath: /homework/conf
+        lifecycle:
+          preStop:
+            exec:
+              command: ["rm", "-f", "/homework/index.html"]
+      initContainers:
+      - name: init-container
+        image: busybox
+        command:
+        - wget
+        - "-O"
+        - "/init/index.html"
+        - http://example.com/index.html
+        volumeMounts:
+        - name: mydir
+          mountPath: /init
+      volumes:
+      - name: mydir
+        persistentVolumeClaim:
+          claimName: kuber-pvc
+      - name: configmap-volume
+        configMap:
+         name: kuber-configmap
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
