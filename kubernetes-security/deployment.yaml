@@ -15,6 +15,7 @@ spec:
       labels:
         app: nginx
     spec:
+      serviceAccountName: monitoring
       nodeSelector:
         homework: "true"
       containers:
