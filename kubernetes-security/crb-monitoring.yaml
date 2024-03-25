@@ -8,5 +8,5 @@ subjects:
   namespace: homework
 roleRef:
   kind: ClusterRole
-  name: kuber-monitoring-role
+  name: kube-monitoring-role
   apiGroup: rbac.authorization.k8s.io
