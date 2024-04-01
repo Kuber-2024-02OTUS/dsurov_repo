@@ -1,107 +1,99 @@
-# Default values for helm-chart-dsurov.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
-replicaCount: 1
-
-image:
-  repository: nginx
-  pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
-
-imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
-
 serviceAccount:
-  # Specifies whether a service account should be created
-  create: true
-  # Automatically mount a ServiceAccount's API credentials?
-  automount: true
-  # Annotations to add to the service account
-  annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name: ""
+  serviceAccountCd:
+    name: cd
+  serviceAccountMon:
+    name: monitoring
+    
+clusterRole:
+  clusterRoleMon:
+    name: kube-monitoring-role
+    resources: nodes/metrics
+    verbs: get
 
-podAnnotations: {}
-podLabels: {}
+clusterRoleBinding:
+  clusterRoleBindingMon:
+    name: monitoring-binding
+    subjects:
+      name: monitoring
+      kind: ServiceAccount
+    roleRef:
+      kind: ClusterRole
+      name: kube-monitoring-role
+  clusterRoleBindingCd:
+    name: cd-admin-binding
+    subjects:
+      name: cd
+      kind: ServiceAccount
+    roleRef:
+      kind: ClusterRole
+      name: admin
+      
+deployment:
+  name: nginx-deployment
+  namespace: homework
+  strategy:
+    type: RollingUpdate
+    maxUnavailable: 1
+  pod_lables: homework-pod
 
-podSecurityContext: {}
-  # fsGroup: 2000
-
-securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
+specontainer:
+  initcontainers:
+    name: init-container
+    images: busybox
+    command:
+    - wget
+    - "-O"
+    - "/init/index.html"
+    - http://example.com/index.html
+    mountPath:
+      name: mydir
+      mount: /init
+  containers:
+    name: nginx-web
+    image: dsurov/h1nginx:v0.4
+    port: 8000
+    path: /index.html
+    mountPath:
+      name: mydir
+      mount: /homework
+    configMap:
+      name: configmap-volume
+      mount: /homework/conf
+    readinessProbe:
+      httpGet:
+        path: /index.html
+        port: 8000
+      initialDelaySeconds: 5
+      periodSeconds: 10
+  volumes:
+    name: mydir
+    persistentVolumeClaim:
+      claimName: kuber-pvc
+    configMap:
+      name: kuber-configmap
 
 service:
+  name: kuber-nginx-service
+  selector_app: nginx
   type: ClusterIP
-  port: 80
+  ports:
+    name: http
+    protocol: TCP
+    port: 80
+    targetPort: 8000
+  replicas: 3
+
+specPvc:
+  accessModes: ReadWriteOnce
+  storage: 1Gi
+  name: kuber-pvc
 
 ingress:
-  enabled: false
-  className: ""
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-  hosts:
-    - host: chart-example.local
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+  host: homework.otus
 
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+deployServiceAccount:
+  name: monitoring
 
-livenessProbe:
-  httpGet:
-    path: /
-    port: http
-readinessProbe:
-  httpGet:
-    path: /
-    port: http
-
-autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 100
-  targetCPUUtilizationPercentage: 80
-  # targetMemoryUtilizationPercentage: 80
-
-# Additional volumes on the output Deployment definition.
-volumes: []
-# - name: foo
-#   secret:
-#     secretName: mysecret
-#     optional: false
-
-# Additional volumeMounts on the output Deployment definition.
-volumeMounts: []
-# - name: foo
-#   mountPath: "/etc/foo"
-#   readOnly: true
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
+storageClass:
+  name: kuber-storage-class
+  reclaimPolicy: Retain
