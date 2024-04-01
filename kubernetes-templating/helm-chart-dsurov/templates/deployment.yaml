@@ -1,58 +1,58 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {? {.Values.deployment.name: ''} : ''}
-  namespace: {? {.Values.deployment.namespace: ''} : ''}
+  name: {{.Values.deployment.name}}
+  namespace: {{.Values.deployment.namespace}}
   labels:
-    app: nginx
+    app: {{.Values.deployment.podLabels}}
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: nginx
+      app: {{.Values.deployment.podLabels}}
   template:
     metadata:
       labels:
-        app: nginx
+        app: {{.Values.deployment.podLabels}}
     spec:
-      serviceAccountName: {? {.Values.deployServiceAccount.name: ''} : ''}
+      serviceAccountName: {{.Values.deployServiceAccount.name}}
       nodeSelector:
         homework: "true"
       containers:
-      - name: {? {.Values.specontainer.containers.name: ''} : ''}
-        image: {? {.Values.specontainer.containers.image: ''} : ''}
+      - name: {{.Values.specontainer.containers.name}}
+        image: {{.Values.specontainer.containers.image}}
         ports:
-        - containerPort: {? {.Values.specontainer.containers.port: ''} : ''}
+        - containerPort: {{.Values.specontainer.containers.port}}
         readinessProbe:
           httpGet:
-            path: {? {.Values.specontainer.containers.readinessProbe.httpGet.path: ''} : ''}
-            port: {? {.Values.specontainer.containers.readinessProbe.httpGet.port: ''} : ''}
-          initialDelaySeconds: {? {.Values.specontainer.containers.readinessProbe.initialDelaySeconds: ''} : ''}
-          periodSeconds: {? {.Values.specontainer.containers.readinessProbe.httpGet.periodSeconds: ''} : ''}
+            path: {{.Values.specontainer.containers.readinessProbe.httpGet.path}}
+            port: {{.Values.specontainer.containers.readinessProbe.httpGet.port}}
+          initialDelaySeconds: {{.Values.specontainer.containers.readinessProbe.initialDelaySeconds}}
+          periodSeconds: {{.Values.specontainer.containers.readinessProbe.httpGet.periodSeconds}}
         volumeMounts:
-        - name: {? {.Values.specontainer.containers.mountPath.name: ''} : ''}
-          mountPath: {? {.Values.specontainer.containers.mountPath.mount: ''} : ''}
-        - name: {? {.Values.specontainer.containers.configMap.name: ''} : ''}
-          mountPath: {? {.Values.specontainer.containers.configMap.mount: ''} : ''}
+        - name: {{.Values.specontainer.containers.mountPath.name}}
+          mountPath: {{.Values.specontainer.containers.mountPath.mount}}
+        - name: {{.Values.specontainer.containers.configMap.name}}
+          mountPath: {{.Values.specontainer.containers.configMap.mount}}
         lifecycle:
           preStop:
             exec:
               command: ["rm", "-f", "/homework/index.html"]
       initContainers:
-      - name: {? {.Values.specontainer.initcontainers.name: ''} : ''}
-        image: {? {.Values.specontainer.initcontainers.images: ''} : ''}
-        command: {? {.Values.specontainer.initcontainers.command: ''} : ''}
+      - name: {{.Values.specontainer.initcontainers.name}}
+        image: {{.Values.specontainer.initcontainers.images}}
+        command: {{.Values.specontainer.initcontainers.command}}
         volumeMounts:
-        - name: {? {.Values.specontainer.initcontainers.mountPath.name: ''} : ''}
-          mountPath: {? {.Values.specontainer.initcontainers.mountPath.mount: ''} : ''}
+        - name: {{.Values.specontainer.initcontainers.mountPath.name}}
+          mountPath: {{.Values.specontainer.initcontainers.mountPath.mount}}
       volumes:
-      - name: {? {.Values.specontainer.volumes.name: ''} : ''}
+      - name: {{.Values.specontainer.volumes.name}}
         persistentVolumeClaim:
-          claimName: {? {.Values.specontainer.volumes.persistentVolumeClaim.claimName: ''} : ''}
+          claimName: {{.Values.specontainer.volumes.persistentVolumeClaim.claimName}}
       - name: configmap-volume
         configMap:
           name: kuber-configmap
   strategy:
-    type: {? {.Values.deployment.strategy.type: ''} : ''}
+    type: {{.Values.deployment.strategy.type}}
     rollingUpdate:
-      maxUnavailable: {? {.Values.deployment.strategy.maxUnavailable: ''} : ''}
+      maxUnavailable: {{.Values.deployment.strategy.maxUnavailable}}

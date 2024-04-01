@@ -1,12 +1,12 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {? {.Values.clusterRoleBinding.clusterRoleBindingMon.name: ''} : ''}
+  name: {{.Values.clusterRoleBinding.clusterRoleBindingMon.name}}
 subjects:
-- kind: {? {.Values.clusterRoleBinding.clusterRoleBindingMon.subjects.name: ''} : ''}
-  name: monitoring
-  namespace: {? {.Values.deployment.namespace.name: ''} : ''}
+- kind: {{.Values.clusterRoleBinding.clusterRoleBindingMon.subjects.kind}}
+  name: {{.Values.clusterRoleBinding.clusterRoleBindingMon.subjects.name}}
+  namespace: {{.Values.deployment.namespace}}
 roleRef:
-  kind: {? {.Values.clusterRoleBinding.clusterRoleBindingMon.roleRef.kind: ''} : ''}
-  name: {? {.Values.clusterRoleBinding.clusterRoleBindingMon.roleRef.name: ''} : ''}
+  kind: {{.Values.clusterRoleBinding.clusterRoleBindingMon.roleRef.kind}}
+  name: {{.Values.clusterRoleBinding.clusterRoleBindingMon.roleRef.name}}
   apiGroup: rbac.authorization.k8s.io
