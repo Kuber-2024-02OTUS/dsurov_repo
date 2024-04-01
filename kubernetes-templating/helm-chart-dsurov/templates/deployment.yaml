@@ -1,68 +1,58 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "helm-chart-dsurov.fullname" . }}
+  name: {? {.Values.deployment.name: ''} : ''}
+  namespace: {? {.Values.deployment.namespace: ''} : ''}
   labels:
-    {{- include "helm-chart-dsurov.labels" . | nindent 4 }}
+    app: nginx
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
-  {{- end }}
+  replicas: 3
   selector:
     matchLabels:
-      {{- include "helm-chart-dsurov.selectorLabels" . | nindent 6 }}
+      app: nginx
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
-      annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       labels:
-        {{- include "helm-chart-dsurov.labels" . | nindent 8 }}
-        {{- with .Values.podLabels }}
-        {{- toYaml . | nindent 8 }}
-        {{- end }}
+        app: nginx
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      serviceAccountName: {{ include "helm-chart-dsurov.serviceAccountName" . }}
-      securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      containers:
-        - name: {{ .Chart.Name }}
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            - name: http
-              containerPort: {{ .Values.service.port }}
-              protocol: TCP
-          livenessProbe:
-            {{- toYaml .Values.livenessProbe | nindent 12 }}
-          readinessProbe:
-            {{- toYaml .Values.readinessProbe | nindent 12 }}
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-          {{- with .Values.volumeMounts }}
-          volumeMounts:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-      {{- with .Values.volumes }}
-      volumes:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.nodeSelector }}
+      serviceAccountName: {? {.Values.deployServiceAccount.name: ''} : ''}
       nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        homework: "true"
+      containers:
+      - name: {? {.Values.specontainer.containers.name: ''} : ''}
+        image: {? {.Values.specontainer.containers.image: ''} : ''}
+        ports:
+        - containerPort: {? {.Values.specontainer.containers.port: ''} : ''}
+        readinessProbe:
+          httpGet:
+            path: {? {.Values.specontainer.containers.readinessProbe.httpGet.path: ''} : ''}
+            port: {? {.Values.specontainer.containers.readinessProbe.httpGet.port: ''} : ''}
+          initialDelaySeconds: {? {.Values.specontainer.containers.readinessProbe.initialDelaySeconds: ''} : ''}
+          periodSeconds: {? {.Values.specontainer.containers.readinessProbe.httpGet.periodSeconds: ''} : ''}
+        volumeMounts:
+        - name: {? {.Values.specontainer.containers.mountPath.name: ''} : ''}
+          mountPath: {? {.Values.specontainer.containers.mountPath.mount: ''} : ''}
+        - name: {? {.Values.specontainer.containers.configMap.name: ''} : ''}
+          mountPath: {? {.Values.specontainer.containers.configMap.mount: ''} : ''}
+        lifecycle:
+          preStop:
+            exec:
+              command: ["rm", "-f", "/homework/index.html"]
+      initContainers:
+      - name: {? {.Values.specontainer.initcontainers.name: ''} : ''}
+        image: {? {.Values.specontainer.initcontainers.images: ''} : ''}
+        command: {? {.Values.specontainer.initcontainers.command: ''} : ''}
+        volumeMounts:
+        - name: {? {.Values.specontainer.initcontainers.mountPath.name: ''} : ''}
+          mountPath: {? {.Values.specontainer.initcontainers.mountPath.mount: ''} : ''}
+      volumes:
+      - name: {? {.Values.specontainer.volumes.name: ''} : ''}
+        persistentVolumeClaim:
+          claimName: {? {.Values.specontainer.volumes.persistentVolumeClaim.claimName: ''} : ''}
+      - name: configmap-volume
+        configMap:
+          name: kuber-configmap
+  strategy:
+    type: {? {.Values.deployment.strategy.type: ''} : ''}
+    rollingUpdate:
+      maxUnavailable: {? {.Values.deployment.strategy.maxUnavailable: ''} : ''}
