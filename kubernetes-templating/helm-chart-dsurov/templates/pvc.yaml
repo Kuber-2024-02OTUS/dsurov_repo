@@ -4,7 +4,8 @@ metadata:
   name: {{.Values.specPvc.name}}
   namespace: {{.Values.deployment.namespace}}
 spec:
-  accessModes: {{.Values.specPvc.accessModes}}
+  accessModes: 
+    - {{.Values.specPvc.accessModes}}
   resources:
     requests:
       storage: {{.Values.specPvc.storage}}

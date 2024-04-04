@@ -6,7 +6,7 @@ metadata:
   labels:
     app: {{.Values.deployment.podLabels}}
 spec:
-  replicas: 3
+  replicas: {{.Values.deployment.replicas}}
   selector:
     matchLabels:
       app: {{.Values.deployment.podLabels}}
@@ -20,15 +20,17 @@ spec:
         homework: "true"
       containers:
       - name: {{.Values.specontainer.containers.name}}
-        image: {{.Values.specontainer.containers.image}}
+        image: {{.Values.specontainer.containers.image}}:{{.Values.specontainer.containers.imageTag}}
         ports:
         - containerPort: {{.Values.specontainer.containers.port}}
+        {{ if eq .Values.specontainer.containers.readinessProbe.enableProbe true}}
         readinessProbe:
           httpGet:
             path: {{.Values.specontainer.containers.readinessProbe.httpGet.path}}
             port: {{.Values.specontainer.containers.readinessProbe.httpGet.port}}
           initialDelaySeconds: {{.Values.specontainer.containers.readinessProbe.initialDelaySeconds}}
           periodSeconds: {{.Values.specontainer.containers.readinessProbe.httpGet.periodSeconds}}
+        {{- end }}
         volumeMounts:
         - name: {{.Values.specontainer.containers.mountPath.name}}
           mountPath: {{.Values.specontainer.containers.mountPath.mount}}

@@ -3,7 +3,7 @@ serviceAccount:
     name: cd
   serviceAccountMon:
     name: monitoring
-    
+
 clusterRole:
   clusterRoleMon:
     name: kube-monitoring-role
@@ -27,14 +27,15 @@ clusterRoleBinding:
     roleRef:
       kind: ClusterRole
       name: admin
-      
+
 deployment:
   name: nginx-deployment
   namespace: homework
   strategy:
     type: RollingUpdate
     maxUnavailable: 1
-  pod_lables: homework-pod
+  podLabels: homework-pod
+  replicas: 3
 
 specontainer:
   initcontainers:
@@ -50,7 +51,8 @@ specontainer:
       mount: /init
   containers:
     name: nginx-web
-    image: dsurov/h1nginx:v0.4
+    image: dsurov/h1nginx
+    imageTag: v0.4
     port: 8000
     path: /index.html
     mountPath:
@@ -60,6 +62,7 @@ specontainer:
       name: configmap-volume
       mount: /homework/conf
     readinessProbe:
+      enableProbe: true
       httpGet:
         path: /index.html
         port: 8000
