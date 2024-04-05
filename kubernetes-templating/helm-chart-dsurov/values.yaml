@@ -1,0 +1,102 @@
+serviceAccount:
+  serviceAccountCd:
+    name: cd
+  serviceAccountMon:
+    name: monitoring
+
+clusterRole:
+  clusterRoleMon:
+    name: kube-monitoring-role
+    resources: nodes/metrics
+    verbs: get
+
+clusterRoleBinding:
+  clusterRoleBindingMon:
+    name: monitoring-binding
+    subjects:
+      name: monitoring
+      kind: ServiceAccount
+    roleRef:
+      kind: ClusterRole
+      name: kube-monitoring-role
+  clusterRoleBindingCd:
+    name: cd-admin-binding
+    subjects:
+      name: cd
+      kind: ServiceAccount
+    roleRef:
+      kind: ClusterRole
+      name: admin
+
+deployment:
+  name: nginx-deployment
+  namespace: homework
+  strategy:
+    type: RollingUpdate
+    maxUnavailable: 1
+  podLabels: homework-pod
+  replicas: 3
+
+specontainer:
+  initcontainers:
+    name: init-container
+    images: busybox
+    command:
+    - wget
+    - "-O"
+    - "/init/index.html"
+    - http://example.com/index.html
+    mountPath:
+      name: mydir
+      mount: /init
+  containers:
+    name: nginx-web
+    image: dsurov/h1nginx
+    imageTag: v0.4
+    port: 8000
+    path: /index.html
+    mountPath:
+      name: mydir
+      mount: /homework
+    configMap:
+      name: configmap-volume
+      mount: /homework/conf
+    readinessProbe:
+      enableProbe: true
+      httpGet:
+        path: /index.html
+        port: 8000
+      initialDelaySeconds: 5
+      periodSeconds: 10
+  volumes:
+    name: mydir
+    persistentVolumeClaim:
+      claimName: kuber-pvc
+    configMap:
+      name: kuber-configmap
+
+service:
+  name: kuber-nginx-service
+  selector_app: nginx
+  type: ClusterIP
+  ports:
+    name: http
+    protocol: TCP
+    port: 80
+    targetPort: 8000
+  replicas: 3
+
+specPvc:
+  accessModes: ReadWriteOnce
+  storage: 1Gi
+  name: kuber-pvc
+
+ingress:
+  host: homework.otus
+
+deployServiceAccount:
+  name: monitoring
+
+storageClass:
+  name: kuber-storage-class
+  reclaimPolicy: Retain

@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Values.deployment.name}}
+  namespace: {{.Values.deployment.namespace}}
+  labels:
+    app: {{.Values.deployment.podLabels}}
+spec:
+  replicas: {{.Values.deployment.replicas}}
+  selector:
+    matchLabels:
+      app: {{.Values.deployment.podLabels}}
+  template:
+    metadata:
+      labels:
+        app: {{.Values.deployment.podLabels}}
+    spec:
+      serviceAccountName: {{.Values.deployServiceAccount.name}}
+      nodeSelector:
+        homework: "true"
+      containers:
+      - name: {{.Values.specontainer.containers.name}}
+        image: {{.Values.specontainer.containers.image}}:{{.Values.specontainer.containers.imageTag}}
+        ports:
+        - containerPort: {{.Values.specontainer.containers.port}}
+        {{ if eq .Values.specontainer.containers.readinessProbe.enableProbe true}}
+        readinessProbe:
+          httpGet:
+            path: {{.Values.specontainer.containers.readinessProbe.httpGet.path}}
+            port: {{.Values.specontainer.containers.readinessProbe.httpGet.port}}
+          initialDelaySeconds: {{.Values.specontainer.containers.readinessProbe.initialDelaySeconds}}
+          periodSeconds: {{.Values.specontainer.containers.readinessProbe.httpGet.periodSeconds}}
+        {{- end }}
+        volumeMounts:
+        - name: {{.Values.specontainer.containers.mountPath.name}}
+          mountPath: {{.Values.specontainer.containers.mountPath.mount}}
+        - name: {{.Values.specontainer.containers.configMap.name}}
+          mountPath: {{.Values.specontainer.containers.configMap.mount}}
+        lifecycle:
+          preStop:
+            exec:
+              command: ["rm", "-f", "/homework/index.html"]
+      initContainers:
+      - name: {{.Values.specontainer.initcontainers.name}}
+        image: {{.Values.specontainer.initcontainers.images}}
+        command: {{.Values.specontainer.initcontainers.command}}
+        volumeMounts:
+        - name: {{.Values.specontainer.initcontainers.mountPath.name}}
+          mountPath: {{.Values.specontainer.initcontainers.mountPath.mount}}
+      volumes:
+      - name: {{.Values.specontainer.volumes.name}}
+        persistentVolumeClaim:
+          claimName: {{.Values.specontainer.volumes.persistentVolumeClaim.claimName}}
+      - name: configmap-volume
+        configMap:
+          name: kuber-configmap
+  strategy:
+    type: {{.Values.deployment.strategy.type}}
+    rollingUpdate:
+      maxUnavailable: {{.Values.deployment.strategy.maxUnavailable}}
