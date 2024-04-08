@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  namespace: homework
+  labels:
+    app: nginx-lbl-deploy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-lbl-pod
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  template:
+    metadata:
+      name: nginx-pod
+      labels:
+        app: nginx-lbl-pod
+    spec:
+      initContainers:
+      - name: generate-index-html
+        image: busybox:1.31.0
+        command: ['sh', '-c', 'wget -O /init/index.html http://example.com/index.html']
+        volumeMounts:
+        - name: mydir
+          mountPath: /init
+      containers:
+      - name: nginx-cust
+        image: dsurov/h7nginx:v0.1
+        readinessProbe:
+          httpGet:
+            port: 8000
+            path: /index.html
+        volumeMounts:
+        - name: mydir
+          mountPath: /init
+      - name: exporter
+        image: nginx/nginx-prometheus-exporter:1.1.0
+        args: ['-nginx.scrape-uri', 'http://127.0.0.1:8000/metrics']
+      volumes:
+      - name: mydir
+        emptyDir: {}
