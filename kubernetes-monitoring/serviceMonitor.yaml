@@ -1,0 +1,13 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: nginx-monitor
+  namespace: homework
+  labels:
+    team: nginx
+spec:
+  selector:
+    matchLabels:
+      app: nginx-service
+  endpoints:
+    - port: exporter
