@@ -15,7 +15,7 @@ spec:
         - values.yaml
   destination:
     server: https://kubernetes.default.svc
-    namespace: homework
+    namespace: homeworkhelm
   syncPolicy:
     automated:
       prune: true
