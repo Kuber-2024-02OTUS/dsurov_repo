@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: otus
+  namespace: argocd
+  # Finalizer that ensures that project is not deleted until it is not referenced by any application
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  # Project description
+  description: Otus Project ArgoCD
+
+  # Allow manifests to deploy from Kuber-2024-02OTUS/dsurov_repo Git repos
+  sourceRepos:
+  - 'https://github.com/Kuber-2024-02OTUS/dsurov_repo.git'
+
+  # Only permit applications to deploy to the guestbook namespace in the same cluster
+  # Destination clusters can be identified by 'server', 'name', or both.
+  destinations:
+  - namespace: '*'
+    server: https://kubernetes.default.svc
+    name: in-cluster
+    
+# Deny all cluster-scoped resources from being created, except for Namespace
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
