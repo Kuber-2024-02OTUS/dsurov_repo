@@ -1,0 +1,5 @@
+server:
+  enabled: "-"
+  logLevel: "debug"
+  image: null
+  replicas: 3
