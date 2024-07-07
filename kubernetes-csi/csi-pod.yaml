@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: csi-nginx
+  namespace: default
+spec:
+  containers:
+   - name: csi-nginx
+     image: nginx
+     volumeMounts:
+       - mountPath: /data
+         name: csi-bucket-dsurov
+  volumes:
+   - name: csi-bucket-dsurov
+     persistentVolumeClaim:
+       claimName: csi-sc-yandex-pvc
+       readOnly: false
