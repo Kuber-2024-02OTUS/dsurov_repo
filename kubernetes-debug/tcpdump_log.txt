@@ -1,0 +1,46 @@
+tcpdump -nn -i any -e port 80
+tcpdump: data link type LINUX_SLL2
+tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
+listening on any, link-type LINUX_SLL2 (Linux cooked v2), snapshot length 262144 bytes
+16:57:21.334976 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 80: 127.0.0.1.37946 > 127.0.0.1.80: Flags [S], seq 3848725482, win 65495, options [mss 65495,sackOK,TS val 4010528888 ecr 0,nop,wscale 7], length 0
+16:57:21.334988 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 80: 127.0.0.1.80 > 127.0.0.1.37946: Flags [S.], seq 3837421112, ack 3848725483, win 65483, options [mss 65495,sackOK,TS val 4010528888 ecr 4010528888,nop,wscale 7], length 0
+16:57:21.334995 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 72: 127.0.0.1.37946 > 127.0.0.1.80: Flags [.], ack 1, win 512, options [nop,nop,TS val 4010528888 ecr 4010528888], length 0
+16:57:21.337980 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 80: 127.0.0.1.37950 > 127.0.0.1.80: Flags [S], seq 1786253213, win 65495, options [mss 65495,sackOK,TS val 4010528891 ecr 0,nop,wscale 7], length 0
+16:57:21.337987 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 80: 127.0.0.1.80 > 127.0.0.1.37950: Flags [S.], seq 842833304, ack 1786253214, win 65483, options [mss 65495,sackOK,TS val 4010528891 ecr 4010528891,nop,wscale 7], length 0
+16:57:21.337993 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 72: 127.0.0.1.37950 > 127.0.0.1.80: Flags [.], ack 1, win 512, options [nop,nop,TS val 4010528891 ecr 4010528891], length 0
+16:57:21.342456 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 763: 127.0.0.1.37946 > 127.0.0.1.80: Flags [P.], seq 1:692, ack 1, win 512, options [nop,nop,TS val 4010528896 ecr 4010528888], length 691: HTTP: GET / HTTP/1.1
+16:57:21.342469 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 72: 127.0.0.1.80 > 127.0.0.1.37946: Flags [.], ack 692, win 507, options [nop,nop,TS val 4010528896 ecr 4010528896], length 0
+16:57:21.342592 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 310: 127.0.0.1.80 > 127.0.0.1.37946: Flags [P.], seq 1:239, ack 692, win 512, options [nop,nop,TS val 4010528896 ecr 4010528896], length 238: HTTP: HTTP/1.1 200 OK
+16:57:21.342602 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 72: 127.0.0.1.37946 > 127.0.0.1.80: Flags [.], ack 239, win 511, options [nop,nop,TS val 4010528896 ecr 4010528896], length 0
+16:57:21.342619 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 684: 127.0.0.1.80 > 127.0.0.1.37946: Flags [P.], seq 239:851, ack 692, win 512, options [nop,nop,TS val 4010528896 ecr 4010528896], length 612: HTTP
+16:57:21.342622 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 72: 127.0.0.1.37946 > 127.0.0.1.80: Flags [.], ack 851, win 507, options [nop,nop,TS val 4010528896 ecr 4010528896], length 0
+16:57:21.417065 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 684: 127.0.0.1.37946 > 127.0.0.1.80: Flags [P.], seq 692:1304, ack 851, win 512, options [nop,nop,TS val 4010528970 ecr 4010528896], length 612: HTTP: GET /favicon.ico HTTP/1.1
+16:57:21.417079 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 72: 127.0.0.1.80 > 127.0.0.1.37946: Flags [.], ack 1304, win 508, options [nop,nop,TS val 4010528971 ecr 4010528970], length 0
+16:57:21.417176 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 782: 127.0.0.1.80 > 127.0.0.1.37946: Flags [P.], seq 851:1561, ack 1304, win 512, options [nop,nop,TS val 4010528971 ecr 4010528970], length 710: HTTP: HTTP/1.1 404 Not Found
+16:57:21.417185 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 72: 127.0.0.1.37946 > 127.0.0.1.80: Flags [.], ack 1561, win 507, options [nop,nop,TS val 4010528971 ecr 4010528971], length 0
+16:57:25.435010 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 870: 127.0.0.1.37946 > 127.0.0.1.80: Flags [P.], seq 1304:2102, ack 1561, win 512, options [nop,nop,TS val 4010532988 ecr 4010528971], length 798: HTTP: GET / HTTP/1.1
+16:57:25.435027 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 72: 127.0.0.1.80 > 127.0.0.1.37946: Flags [.], ack 2102, win 506, options [nop,nop,TS val 4010532988 ecr 4010532988], length 0
+16:57:25.435130 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 252: 127.0.0.1.80 > 127.0.0.1.37946: Flags [P.], seq 1561:1741, ack 2102, win 512, options [nop,nop,TS val 4010532989 ecr 4010532988], length 180: HTTP: HTTP/1.1 304 Not Modified
+16:57:25.435139 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 72: 127.0.0.1.37946 > 127.0.0.1.80: Flags [.], ack 1741, win 511, options [nop,nop,TS val 4010532989 ecr 4010532989], length 0
+16:57:36.464099 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 72: 127.0.0.1.37950 > 127.0.0.1.80: Flags [.], ack 1, win 512, options [nop,nop,TS val 4010544018 ecr 4010528891], length 0
+16:57:36.464115 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 72: 127.0.0.1.80 > 127.0.0.1.37950: Flags [.], ack 1, win 512, options [nop,nop,TS val 4010544018 ecr 4010528891], length 0
+16:57:40.560080 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 72: 127.0.0.1.37946 > 127.0.0.1.80: Flags [.], ack 1741, win 512, options [nop,nop,TS val 4010548114 ecr 4010532989], length 0
+16:57:40.560103 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 72: 127.0.0.1.80 > 127.0.0.1.37946: Flags [.], ack 2102, win 512, options [nop,nop,TS val 4010548114 ecr 4010532989], length 0
+16:57:59.978934 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 252: 127.0.0.1.80 > 127.0.0.1.37946: Flags [P.], seq 1741:1921, ack 2900, win 512, options [nop,nop,TS val 4010567532 ecr 4010567532], length 180: HTTP: HTTP/1.1 304 Not Modified
+16:57:59.978943 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 72: 127.0.0.1.37946 > 127.0.0.1.80: Flags [.], ack 1921, win 511, options [nop,nop,TS val 4010567532 ecr 4010567532], length 0
+16:58:01.363787 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 870: 127.0.0.1.37946 > 127.0.0.1.80: Flags [P.], seq 2900:3698, ack 1921, win 512, options [nop,nop,TS val 4010568917 ecr 4010567532], length 798: HTTP: GET / HTTP/1.1
+16:58:01.363890 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 252: 127.0.0.1.80 > 127.0.0.1.37946: Flags [P.], seq 1921:2101, ack 3698, win 512, options [nop,nop,TS val 4010568917 ecr 4010568917], length 180: HTTP: HTTP/1.1 304 Not Modified
+16:58:01.363894 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 72: 127.0.0.1.37946 > 127.0.0.1.80: Flags [.], ack 2101, win 511, options [nop,nop,TS val 4010568917 ecr 4010568917], length 0
+16:58:04.557627 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 870: 127.0.0.1.37946 > 127.0.0.1.80: Flags [P.], seq 3698:4496, ack 2101, win 512, options [nop,nop,TS val 4010572111 ecr 4010568917], length 798: HTTP: GET / HTTP/1.1
+16:58:04.557736 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 252: 127.0.0.1.80 > 127.0.0.1.37946: Flags [P.], seq 2101:2281, ack 4496, win 512, options [nop,nop,TS val 4010572111 ecr 4010572111], length 180: HTTP: HTTP/1.1 304 Not Modified
+16:58:04.557740 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 72: 127.0.0.1.37946 > 127.0.0.1.80: Flags [.], ack 2281, win 511, options [nop,nop,TS val 4010572111 ecr 4010572111], length 0
+16:58:06.672122 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 72: 127.0.0.1.37950 > 127.0.0.1.80: Flags [.], ack 1, win 512, options [nop,nop,TS val 4010574226 ecr 4010559122], length 0
+16:58:06.672137 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 72: 127.0.0.1.80 > 127.0.0.1.37950: Flags [.], ack 1, win 512, options [nop,nop,TS val 4010574226 ecr 4010528891], length 0
+16:58:09.040108 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 870: 127.0.0.1.37946 > 127.0.0.1.80: Flags [P.], seq 4496:5294, ack 2281, win 512, options [nop,nop,TS val 4010576594 ecr 4010572111], length 798: HTTP: GET / HTTP/1.1
+16:58:09.040236 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 252: 127.0.0.1.80 > 127.0.0.1.37946: Flags [P.], seq 2281:2461, ack 5294, win 512, options [nop,nop,TS val 4010576594 ecr 4010576594], length 180: HTTP: HTTP/1.1 304 Not Modified
+16:58:09.040240 lo    In  ifindex 1 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 72: 127.0.0.1.37946 > 127.0.0.1.80: Flags [.], ack 2461, win 511, options [nop,nop,TS val 4010576594 ecr 4010576594], length 0
+1
+
+58 packets captured
+116 packets received by filter
+0 packets dropped by kernel

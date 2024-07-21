@@ -1,0 +1,10 @@
+cat /host/var/log/pods/default_nginx-debug_10265004-5aa2-4ee9-a7ca-dc4261bfc4f1/nginx-debug/0.log
+2024-07-21T16:57:21.342798748Z stdout F 127.0.0.1 - - [22/Jul/2024:00:57:21 +0800] "GET / HTTP/1.1" 200 612 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" "-"
+2024-07-21T16:57:21.417244865Z stderr F 2024/07/22 00:57:21 [error] 13#13: *1 open() "/usr/share/nginx/html/favicon.ico" failed (2: No such file or directory), client: 127.0.0.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "localhost", referrer: "http://localhost/"
+2024-07-21T16:57:21.417261864Z stdout F 127.0.0.1 - - [22/Jul/2024:00:57:21 +0800] "GET /favicon.ico HTTP/1.1" 404 555 "http://localhost/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" "-"
+2024-07-21T16:57:25.435265157Z stdout F 127.0.0.1 - - [22/Jul/2024:00:57:25 +0800] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" "-"
+2024-07-21T16:57:59.979028067Z stdout F 127.0.0.1 - - [22/Jul/2024:00:57:59 +0800] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" "-"
+2024-07-21T16:58:01.363993799Z stdout F 127.0.0.1 - - [22/Jul/2024:00:58:01 +0800] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" "-"
+2024-07-21T16:58:04.557817826Z stdout F 127.0.0.1 - - [22/Jul/2024:00:58:04 +0800] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" "-"
+2024-07-21T16:58:09.040380433Z stdout F 127.0.0.1 - - [22/Jul/2024:00:58:09 +0800] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" "-"
+~ #

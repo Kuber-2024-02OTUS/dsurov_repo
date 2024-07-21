@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-dsurov
+spec:
+  containers:
+  - name: nginx-web
+    image: dsurov/h1nginx:v0.4
+    ports:
+    - containerPort: 8000
+    volumeMounts:
+    - name: mydir
+      mountPath: /homework
+    volumeMounts:
+    - name: mydir
+      mountPath: /init
+  volumes:
+  - name: mydir
+    emptyDir: {}
